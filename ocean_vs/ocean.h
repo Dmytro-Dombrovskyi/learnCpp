@@ -29,7 +29,7 @@ class block : public cell {
 	//virtual bool is_movable () const { return false; }
 	virtual void draw () = 0;
 };
-
+// class animal for citizen in the ocean
 class animal : public cell {
 	virtual bool can_pass () const { return true; }
 	virtual bool is_movable () const { return true; }
