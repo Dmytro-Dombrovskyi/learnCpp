@@ -19,41 +19,51 @@ public:
 	virtual ~cell() {} // destructor
 	virtual void draw () { std::cout << c_symbol << " "; }
 	virtual char get_symbol () const { return c_symbol; }
-	virtual bool can_pass () const { return false; }
+	virtual bool can_pass () const { return true; }
 	virtual bool is_movable () const { return false; }
 };
 
-// block(not movable)
+// virtual class block(not movable)
 class block : public cell {
-	//virtual bool can_pass () const { return false; }
-	//virtual bool is_movable () const { return false; }
+public:
+	explicit block (const char symbol = 'b') : cell (symbol) {}
+	virtual bool is_movable () const { return false; }
+	virtual bool can_pass () const { return false; }
 	virtual void draw () = 0;
+	virtual ~block () {}
 };
-// class animal for citizen in the ocean
+
+class obstacle : public block {
+public:
+	explicit obstacle (const char symbol = '|') 
+		: block (symbol) {}	
+};
+
+// virtual base class for citizen in the ocean
 class animal : public cell {
-	virtual bool can_pass () const { return true; }
-	virtual bool is_movable () const { return true; }
+public:
+	explicit animal (const char symbol = 'a') 
+		: cell (symbol) {}
+	//virtual bool can_pass () const { return true; }
 	virtual void draw () = 0;
+	virtual bool is_movable () const { return true; }	
+	virtual bool is_civil () const { return false; }
+	virtual bool is_predator ()const { return false; }
+	virtual ~animal () {}
 };
 
-	   // try changes on work
-
-class civil : public cell {
+// movable class civil citizens  
+class civil : public animal {
 public:
-	explicit civil (const char symbol = 'c') : cell(symbol) {}
-	virtual ~civil () {}
+	explicit civil (const char symbol = 'c') : animal(symbol) {}
+	virtual bool is_civil () const { return true; }
 };
 
-class predator : public cell {
+// class predator, which can eat other citizens and movable
+class predator : public animal {
 public:
-    explicit predator(const char symbol = 'p') : cell(symbol) { }
-		virtual ~predator () {}
-};
-
-class obstacle : public cell {
-public:
-    explicit obstacle(const char symbol = '|') : cell(symbol) { }
-		virtual ~obstacle () {}
+    explicit predator(const char symbol = 'p') : animal(symbol) { }
+		virtual bool is_predator () const { return true; }
 };
 
 class ocean {
