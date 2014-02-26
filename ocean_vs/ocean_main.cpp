@@ -3,15 +3,11 @@
 
 int main() {
 	srand (time (NULL));
-	ocean a(7);
-	a.show_citizens ();	
-	a.fill_table ();
-	a.show_citizens ();
-	a.show_table ();
-	a.move_citizens (1);
-	a.show_table ();
-	a.move_citizens (1);
-	a.show_table ();
+	ocean my_ocean (5);
+	my_ocean.show_citizens ();	
+	my_ocean.fill_table ();
+	my_ocean.show_citizens ();
+	
 	
 	std::cout << "\nDone!";
 	std::cin.get();

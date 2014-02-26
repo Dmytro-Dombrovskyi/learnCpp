@@ -62,19 +62,24 @@ public:
 // class predator, which can eat other citizens and movable
 class predator : public animal {
 public:
-    explicit predator(const char symbol = 'p') : animal(symbol) { }
-		virtual bool is_predator () const { return true; }
+  explicit predator(const char symbol = 'p') : animal(symbol) { }
+	virtual bool is_predator () const { return true; }
 };
 
 class ocean {
 private:
-	enum ocean_citizen { r_civil, r_predt, r_obstk, r_clean };
+	enum ocean_citizen { r_civil, r_predt, r_obstk, r_clean };	
 	size_t table_size;
 	size_t num_civl;
 	size_t num_pred;
 	size_t num_obst;
 	size_t num_cell;
-
+	struct counter_citizen {
+		size_t predators;
+		size_t obstical;
+		size_t cell;
+		counter_citizen ();
+	};
   cell ***table;
 	coordinate move;
 public:

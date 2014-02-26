@@ -5,26 +5,16 @@ ocean::ocean (size_t i_size) : table_size (i_size) {
 	num_civl = num_pred = (i_size * i_size) / divide_val;
 	num_obst = i_size * i_size / (divide_val + 1);
 	num_cell = i_size * i_size - num_civl - num_pred - num_obst;
-	try {
-		table = new cell**[table_size];
-		for(size_t i = 0; i < table_size; ++i) {
-			table[i] = new cell*[table_size];
+	
+	table = new cell**[table_size];
+	for(size_t i = 0; i < table_size; ++i) {
+		table[i] = new cell*[table_size];
+	}
+	for(size_t i = 0; i < table_size; ++i) {
+		for(size_t j = 0; j < table_size; ++j) {
+			table[i][j] = nullptr;
 		}
-		for(size_t i = 0; i < table_size; ++i) {
-			for(size_t j = 0; j < table_size; ++j) {
-				table[i][j] = nullptr;
-			}
-		}
-	}
-	catch(std::bad_alloc &ex) {
-		table = nullptr;
-		std::cerr << "Bad alloc exception: " << ex.what ();
-		abort();
-	}
-	catch(...) {
-		std::cerr << "Error! Process was terminated by unknown reason.";
-		abort();
-	}
+	}	
 }
 
 // constructor 2 with number of citizens

@@ -1,7 +1,18 @@
 ﻿  ocean_main.cpp
-e:\bkt_programs2014\homework_23_01_2014\ocean\ocean_vs\ocean_vs\ocean_main.cpp(5): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(5): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
   ocean.cpp
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(202): error C2259: 'civil' : cannot instantiate abstract class
+          due to following members:
+          'void animal::draw(void)' : is abstract
+          e:\git_repo\learncpp\ocean_vs\ocean.h(48) : see declaration of 'animal::draw'
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(205): error C2259: 'predator' : cannot instantiate abstract class
+          due to following members:
+          'void animal::draw(void)' : is abstract
+          e:\git_repo\learncpp\ocean_vs\ocean.h(48) : see declaration of 'animal::draw'
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(208): error C2259: 'obstacle' : cannot instantiate abstract class
+          due to following members:
+          'void block::draw(void)' : is abstract
+          e:\git_repo\learncpp\ocean_vs\ocean.h(32) : see declaration of 'block::draw'
   objects_counter.cpp
   coordinates.cpp
   Generating Code...
-  ocean_vs.vcxproj -> E:\bkt_programs2014\homework_23_01_2014\ocean\ocean_vs\Debug\ocean_vs.exe
