@@ -36,7 +36,7 @@ class animal : public cell {
 	virtual void draw () = 0;
 };
 
-	   // 
+	   // try changes on work
 
 class civil : public cell {
 public:
