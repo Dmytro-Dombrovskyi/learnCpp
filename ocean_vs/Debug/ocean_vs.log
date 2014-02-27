@@ -1,18 +1,59 @@
 ﻿  ocean_main.cpp
 e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(5): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(6): error C2065: 'ocean' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(6): error C2146: syntax error : missing ';' before identifier 'my_ocean'
+e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(6): error C3861: 'my_ocean': identifier not found
+e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(7): error C2065: 'my_ocean' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(7): error C2228: left of '.show_citizens' must have class/struct/union
+          type is 'unknown-type'
+e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(8): error C2065: 'my_ocean' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(8): error C2228: left of '.fill_table' must have class/struct/union
+          type is 'unknown-type'
+e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(9): error C2065: 'my_ocean' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(9): error C2228: left of '.show_citizens' must have class/struct/union
+          type is 'unknown-type'
   ocean.cpp
-e:\git_repo\learncpp\ocean_vs\ocean.cpp(202): error C2259: 'civil' : cannot instantiate abstract class
-          due to following members:
-          'void animal::draw(void)' : is abstract
-          e:\git_repo\learncpp\ocean_vs\ocean.h(48) : see declaration of 'animal::draw'
-e:\git_repo\learncpp\ocean_vs\ocean.cpp(205): error C2259: 'predator' : cannot instantiate abstract class
-          due to following members:
-          'void animal::draw(void)' : is abstract
-          e:\git_repo\learncpp\ocean_vs\ocean.h(48) : see declaration of 'animal::draw'
-e:\git_repo\learncpp\ocean_vs\ocean.cpp(208): error C2259: 'obstacle' : cannot instantiate abstract class
-          due to following members:
-          'void block::draw(void)' : is abstract
-          e:\git_repo\learncpp\ocean_vs\ocean.h(32) : see declaration of 'block::draw'
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(3): error C2653: 'ocean' : is not a class or namespace name
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(3): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(3): error C2550: 'ocean' : constructor initializer lists are only allowed on constructor definitions
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(5): error C2065: 'num_civl' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(5): error C2065: 'num_pred' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(6): error C2065: 'num_obst' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(7): error C2065: 'num_cell' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(7): error C2065: 'num_civl' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(7): error C2065: 'num_pred' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(7): error C2065: 'num_obst' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(9): error C2065: 'table' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(9): error C2061: syntax error : identifier 'cell'
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(10): error C2065: 'table_size' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(11): error C2065: 'table' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(11): error C2061: syntax error : identifier 'cell'
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(13): error C2065: 'table_size' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(14): error C2065: 'table_size' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(15): error C2065: 'table' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(18): warning C4508: 'ocean' : function should return a value; 'void' return type assumed
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(21): error C2653: 'ocean' : is not a class or namespace name
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(22): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(25): error C2550: 'ocean' : constructor initializer lists are only allowed on constructor definitions
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(26): error C2065: 'num_cell' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(26): error C2065: 'table_size' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(26): error C2065: 'num_civl' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(26): error C2065: 'num_pred' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(26): error C2065: 'num_obst' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(28): error C2065: 'table_size' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(28): error C2065: 'num_cell' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(30): error C2065: 'table' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(30): error C2061: syntax error : identifier 'cell'
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(31): error C2065: 'table_size' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(32): error C2065: 'table' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(32): error C2061: syntax error : identifier 'cell'
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(34): error C2065: 'table_size' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(35): error C2065: 'table_size' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(36): error C2065: 'table' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(41): error C2065: 'table' : undeclared identifier
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(50): warning C4508: 'ocean' : function should return a value; 'void' return type assumed
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(53): error C2653: 'ocean' : is not a class or namespace name
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(53): fatal error C1903: unable to recover from previous error(s); stopping compilation
   objects_counter.cpp
   coordinates.cpp
   Generating Code...

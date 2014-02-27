@@ -35,5 +35,8 @@
     <ClInclude Include="ocean_help_classes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="citizens.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

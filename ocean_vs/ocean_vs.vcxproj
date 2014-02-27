@@ -84,6 +84,7 @@
     <ClCompile Include="ocean_main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="citizens.h" />
     <ClInclude Include="ocean.h" />
     <ClInclude Include="ocean_help_classes.h" />
   </ItemGroup>

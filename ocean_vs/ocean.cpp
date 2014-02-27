@@ -1,20 +1,24 @@
 #include "ocean.h"
 // constructor by default
-ocean::ocean (size_t i_size) : table_size (i_size) {
-	size_t divide_val = 4;
-	num_civl = num_pred = (i_size * i_size) / divide_val;
-	num_obst = i_size * i_size / (divide_val + 1);
-	num_cell = i_size * i_size - num_civl - num_pred - num_obst;
+Ocean::Ocean (const size_t i_size) : tableSize_(i_size) {	
 	
-	table = new cell**[table_size];
-	for(size_t i = 0; i < table_size; ++i) {
-		table[i] = new cell*[table_size];
+	table_ = new Cell**[tableSize_];
+	for(size_t i = 0; i < tableSize_; ++i) {
+		table_[i] = new Cell*[tableSize_];
 	}
 	for(size_t i = 0; i < table_size; ++i) {
 		for(size_t j = 0; j < table_size; ++j) {
-			table[i][j] = nullptr;
+			table_[i][j] = nullptr;
 		}
-	}	
+	}
+	CounterCitizen (i_size);
+}
+// constructor for struct ConterCitizen
+CounterCitizen::CounterCitizen (const size_t value) {
+	size_t divide_val = 4;
+	nCivil = nPredator = (value * value) / divide_val;
+	nBlock = value * value / (divide_val + 1);
+	nCell = value * value - num_civl - num_pred - num_obst;
 }
 
 // constructor 2 with number of citizens
