@@ -1,172 +1,89 @@
 #include "ocean.h"
 // constructor by default
-Ocean::Ocean (const size_t i_size) : tableSize_(i_size) {	
-	
-	table_ = new Cell**[tableSize_];
-	for(size_t i = 0; i < tableSize_; ++i) {
-		table_[i] = new Cell*[tableSize_];
+Ocean::Ocean (const size_t i_size)
+	: tableSize_(i_size) {
+	this->CreateTable (tableSize_);	
+	counter = new CounterCitizen (tableSize_);
+}
+// get new memory to member table
+void Ocean::CreateTable (const size_t i_size) {
+	table_ = new Cell**[i_size];
+	for(size_t i = 0; i < i_size; ++i) {
+		table_[i] = new Cell*[i_size];
 	}
-	for(size_t i = 0; i < table_size; ++i) {
-		for(size_t j = 0; j < table_size; ++j) {
+	for(size_t i = 0; i < i_size; ++i) {
+		for(size_t j = 0; j < i_size; ++j) {
 			table_[i][j] = nullptr;
 		}
 	}
-	CounterCitizen (i_size);
 }
-// constructor for struct ConterCitizen
-CounterCitizen::CounterCitizen (const size_t value) {
-	size_t divide_val = 4;
-	nCivil = nPredator = (value * value) / divide_val;
-	nBlock = value * value / (divide_val + 1);
-	nCell = value * value - num_civl - num_pred - num_obst;
-}
-
-// constructor 2 with number of citizens
-ocean::ocean (size_t i_n, size_t civ_num,
-							size_t pred_num, size_t obst_num ) :
-							table_size (i_n), num_civl (civ_num),
-							num_pred (pred_num), num_obst (obst_num),
-							table (nullptr) {
-	num_cell = table_size * table_size - num_civl - num_pred - num_obst;
-
-	if(table_size && (num_cell > (table_size * 2))) {
-		try {
-			table = new cell**[table_size];
-			for(size_t i = 0; i < table_size; ++i) {
-				table[i] = new cell*[table_size];
-			}
-			for(size_t i = 0; i < table_size; ++i) {
-				for(size_t j = 0; j < table_size; ++j) {
-					table[i][j] = nullptr;
-				}
-			}
-		}
-		catch(std::bad_alloc &ex) {
-			table = nullptr;
-			std::cerr << "Bad alloc exception: " << ex.what();
-			abort();
-		}
-		catch(...) {
-			std::cerr << "Error! Process was terminated by unknown reason.";
-			abort();
+// delete all memory in current class
+void Ocean::CleanTable () {
+	for(size_t i = 0; i < tableSize_; ++i) {
+		for(size_t j = 0; j < tableSize_; ++j) {
+			delete table_[i][j];
+			table_[i][j] = nullptr;
 		}
 	}
+	for(size_t i = 0; i < tableSize_; ++i) {
+		delete[]table_[i];
+		table_[i] = nullptr;
+	}
+	delete[]table_;
+	table_ = nullptr;	
 }
 
 // destructor for class ocean
-ocean::~ocean () {
-	for(size_t i = 0; i < table_size; ++i) {
-		for(size_t j = 0; j < table_size; ++j) {
-			delete table[i][j];
-			table[i][j] = nullptr;
-		}
-	}
-	for(size_t i = 0; i < table_size; ++i) {
-		delete[]table[i];
-		table[i] = nullptr;
-	}
-	delete[]table;
-	table = nullptr;
+Ocean::~Ocean () {
+	this->CleanTable ();	
+	delete counter;
+	counter = nullptr;
 }
 
 // assignment constructor for class ocean
-ocean & ocean::operator=(const ocean &a) {
-	if(this != &a) {
-		// creating temporary class variable
-		try {
-			cell ***temp = new cell**[a.table_size];
-			for(size_t i = 0; i < a.table_size; ++i) {
-				temp[i] = new cell*[a.table_size];
-			}
-			for(size_t i = 0; i < a.table_size; ++i) {
-				for(size_t j = 0; j < a.table_size; ++j) {
-					if(a.table[i][j] == nullptr) {
-						temp[i][j] = nullptr;
-					}
-					else
-						temp[i][j] = new cell(*(a.table[i][j]));//////////////////
-				}
-			}
-			// delete data in current class
-			for(size_t i = 0; i < table_size; ++i) {
-				for(size_t j = 0; j < table_size; ++j) {
-					delete table[i][j];
-					table[i][j] = nullptr;
-				}
-			}
-			for(size_t i = 0; i < table_size; ++i) {
-				delete[]table[i];
-				table[i] = nullptr;
-			}
-			delete[]table;
-
-			// assignment current class new data
-			table = temp;
-			table_size = a.table_size;
-			num_civl = a.num_civl;
-			num_pred = a.num_pred;
-			num_obst = a.num_obst;
-			num_cell = a.num_cell;
-			move = a.move;
+Ocean & Ocean::operator=(const Ocean &a) {
+	if(this != &a) {		
+		Cell ***temp = new Cell**[a.tableSize_];
+		for(size_t i = 0; i < a.tableSize_; ++i) {
+			temp[i] = new Cell*[a.tableSize_];
 		}
-		catch(std::bad_alloc &ex) {
-			table = nullptr;
-			std::cerr << "Bad alloc exception: " << ex.what ();
-			abort();
+		for(size_t i = 0; i < a.tableSize_; ++i) {
+			for(size_t j = 0; j < a.tableSize_; ++j) {
+				if(a.table_[i][j] == nullptr)
+					temp[i][j] = nullptr;					
+				else
+					temp[i][j] = new Cell(*(a.table_[i][j]));
+			}
 		}
-		catch(...) {
-			std::cerr << "Process was terminated by unknown error!";
-			abort();
-		}
+		// delete data in current class
+		this->CleanTable ();
+		tableSize_ = a.tableSize_;
+		table_ = temp;
+		counter = a.counter;		
 	}
 	return *this;
 }
 // copy constructor for class ocean
-ocean::ocean (const ocean &a) {
-	try {
-		// get new memory for current class
-		table = new cell**[a.table_size];
-		for(size_t i = 0; i < a.table_size; ++i) {
-			table[i] = new cell*[table_size];
+Ocean::Ocean (const Ocean &a) {	
+	// get new memory for current class
+	table_ = new Cell**[a.tableSize_];
+	for(size_t i = 0; i < a.tableSize_; ++i) {
+		table_[i] = new Cell*[tableSize_];
+	}
+	for(size_t i = 0; i < a.tableSize_; ++i) {
+		for(size_t j = 0; j < a.tableSize_; ++j) {
+			table_[i][j] = new Cell (*(a.table_[i][j]));
 		}
-		for(size_t i = 0; i < a.table_size; ++i) {
-			for(size_t j = 0; j < a.table_size; ++j) {
-				table[i][j] = new cell (*(a.table[i][j]));
-			}
-		}
-		// assignment current class new data
-		table_size = a.table_size;
-		num_civl = a.num_civl;
-		num_pred = a.num_pred;
-		num_obst = a.num_obst;
-		num_cell = a.num_cell;
-		move = a.move;
 	}
-	catch(std::bad_alloc &ex) {
-		table = nullptr;
-		std::cerr << "Bad alloc exception: " << ex.what ();
-		abort();
-	}
-	catch(...) {
-		std::cerr << "Process was terminated by unknown error!";
-		abort();
-	}
+	tableSize_ = a.tableSize_;
+	counter = a.counter;
 }
-////
-void ocean::clean_table () {
-	for(size_t y = 0; y < table_size; ++y) {
-		for(size_t x = 0; x < table_size; ++x) {
-			delete table[y][x];
-			table[y][x] = nullptr;
-		}
-	}
-}
+
 // fill data in current class ocean
-void ocean::fill_table () {
-	clean_table ();
-	objects_counter fill (num_civl, num_pred, num_obst, num_cell);
-	int current_type = 0;
-	const int types_of_objects = 4;
+void Ocean::FillTable () {
+	this->CleanTable ();	
+	/*int current_type = 0;
+	const int types_of_objects = 4;*/
 
 	while(fill.total_objects() > 0) {
 		for(size_t y = 0; y < table_size; ++y) {
