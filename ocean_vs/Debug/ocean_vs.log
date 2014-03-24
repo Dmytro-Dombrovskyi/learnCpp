@@ -1,7 +1,10 @@
 ﻿  ocean_main.cpp
-e:\git_repo\learncpp\ocean_vs\ocean_main.cpp(5): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
   ocean.cpp
-  objects_counter.cpp
   coordinates.cpp
   Generating Code...
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(170): warning C4706: assignment within conditional expression
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(173): warning C4706: assignment within conditional expression
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(178): warning C4706: assignment within conditional expression
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(183): warning C4706: assignment within conditional expression
+e:\git_repo\learncpp\ocean_vs\ocean.cpp(188): warning C4706: assignment within conditional expression
   ocean_vs.vcxproj -> E:\GIT_REPO\learnCpp\Debug\ocean_vs.exe

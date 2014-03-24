@@ -2,13 +2,20 @@
 #include "ocean.h"
 
 int main() {
-	srand (time (NULL));
-	//Ocean Ob_1(5);
-	//std::cout << (Ob_1.GetTableSize( )) << std::endl;
+	srand (static_cast<unsigned int>(time (NULL)));
+	try
+	{
+		Ocean my_Ocean(3);
+		my_Ocean.FillTable();
+		my_Ocean.ShowTable();
+		my_Ocean.ShowCitizens();
+
+		my_Ocean.MoveCitizens();
+		my_Ocean.ShowTable();
+		my_Ocean.ShowCitizens( );
+	}
+	catch(std::exception &ex) { std::cerr << ex.what( ); }
 	
-	CounterCitizen CC1(5);
-	bool n = CC1.Is_nBlock( );
-	std::cout << n << std::endl;
 
 	std::cout << "\nDone!";
 	std::cin.get();

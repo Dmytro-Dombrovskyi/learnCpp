@@ -24,15 +24,9 @@
     <ClCompile Include="coordinates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="objects_counter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ocean.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ocean_help_classes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="citizens.h">

@@ -1,4 +1,7 @@
 #include "ocean.h"
+
+const int CounterCitizen::nTypes_ = 4; // static private member
+
 // constructor by default
 Ocean::Ocean (const size_t i_size)
 	: tableSize_(i_size) 
@@ -83,124 +86,112 @@ Ocean::Ocean (const Ocean &a) {
 
 // fill data in current class ocean
 void Ocean::FillTable () {		
-	int current_type = 0;
-	const int types_of_objects = 4;
-	enum object { civil, block, predaor, cell };
-		for(size_t y = 0; y < tableSize_; ++y) {
-			for(size_t x = 0; x < tableSize_; ++x) {
-				current_type = rand () % types_of_objects;
+	CounterCitizen Citizens(*counter);
+	const int number_types = Citizens.Get_nTypes();	
+	int current_type = 0;	
+	
+	for(size_t y = 0; y < tableSize_; ++y)
+	{
+		for(size_t x = 0; x < tableSize_; ++x)
+		{
+			current_type = rand() % number_types;
 
-				if(fill.get_object (current_type)) {
-					create_new_citizen (current_type, y, x);
-				}
-				else {
-					if(fill.total_objects() == 0)
-						break;
-					else {
-						if(x)
-							--x;
+			if(Citizens.Check_Citizens_By_Number(current_type))
+			{
+				CreateNewCitizen(Citizens, current_type, y, x);
+			}
+			else --x;
+		}
+	}
+}
+
+void Ocean::CreateNewCitizen (CounterCitizen & temp,
+										const int type_object,
+										const size_t y_coord, 
+										const size_t x_coord) {
+	enum { civil, block, predator, cell };
+	switch(type_object) {
+		case civil:
+		table_[y_coord][x_coord] = new Civil;
+		temp.Minus_Citizen_By_Number(civil);
+		break;
+	case block:
+		table_[y_coord][x_coord] = new Block;
+		temp.Minus_Citizen_By_Number(block);
+		break;
+	case predator:
+		table_[y_coord][x_coord] = new Predator;
+		temp.Minus_Citizen_By_Number(predator);
+		break;
+	case cell:
+		table_[y_coord][x_coord] = new Cell;
+		temp.Minus_Citizen_By_Number(cell);
+		break;
+	default:
+		throw std::invalid_argument
+			("Error! Wrong value for assignment.");
+	}	
+}
+
+// show table by console
+void Ocean::ShowTable () const {
+	for(size_t y = 0; y < tableSize_; ++y) {
+		for(size_t x = 0; x < tableSize_; ++x) {
+			if(table_[y][x] != nullptr)
+				table_[y][x]->Draw ();
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
+
+void Ocean::ShowCitizens() const
+{
+	counter->Show_Citizens();
+}
+
+void Ocean::MoveCitizens (/*int steps*/) {	
+	//const int possible_sides = /*4*/ 1;
+	const size_t max_coord = tableSize_ - 1;
+	coordinates current;
+	coordinates compare;
+	Predator *ptrPredator;
+	Civil		*ptrCivil;
+	
+	
+	for(size_t y_cord = 0; y_cord <= max_coord; ++y_cord)
+	{
+		for(size_t x_cord = 0; x_cord <= max_coord; ++x_cord)
+		{	
+			if(table_[y_cord][x_cord]->IsMovable( ))
+			{
+				current.Set_Coordinates(y_cord, x_cord);				
+				Side_For_Step Possible_Sides(max_coord, y_cord, x_cord);
+				if((ptrPredator = dynamic_cast<Predator*>(table_[y_cord][x_cord])))
+				{					
+					if(Possible_Sides.Can_Go_Right() &&
+						(ptrCivil = dynamic_cast<Civil*>(table_[y_cord][x_cord + 1])) )
+					{
+						compare.Set_Coordinates(y_cord, (x_cord + 1));
+						PredatorEatCivil(current, compare);
+					}
+					else if(Possible_Sides.Can_Go_Down() && (ptrCivil = dynamic_cast<Civil*>(table_[y_cord + 1][x_cord])))
+					{
+						compare.Set_Coordinates(y_cord + 1, x_cord);
+						PredatorEatCivil(current, compare);
+					}
+					else if(Possible_Sides.Can_Go_Left() && (ptrCivil = dynamic_cast<Civil*>(table_[y_cord][x_cord - 1])))
+					{
+						compare.Set_Coordinates(y_cord, x_cord - 1);
+						PredatorEatCivil(current, compare);
+					}
+					else if(Possible_Sides.Can_Go_Up( ) && (ptrCivil = dynamic_cast<Civil*>(table_[y_cord - 1][x_cord])))
+					{
+						compare.Set_Coordinates(y_cord - 1, x_cord);
+						PredatorEatCivil(current, compare);
 					}
 				}
 			}
 		}
-	}
+	}	
 }
-//void ocean::create_new_citizen (const int type_of_obj,
-//										  const size_t y_coord, const size_t x_coord) {
-//	try {
-//		switch(type_of_obj) {
-//		case r_civil:
-//			table[y_coord][x_coord] = new civil;
-//			break;
-//		case r_predt:
-//			table[y_coord][x_coord] = new predator;
-//			break;
-//		case r_obstk:
-//			table[y_coord][x_coord] = new obstacle;
-//			break;
-//		case r_clean:
-//			table[y_coord][x_coord] = new cell;
-//			break;
-//		default:
-//			throw std::invalid_argument
-//				("Error! Wrong value for assignment.");
-//		}
-//	}
-//	catch(std::invalid_argument &ex) {
-//		std::cerr << "Can't get object:" << ex.what ();
-//		abort ();
-//	}
-//	catch(std::bad_alloc &ex) {
-//		delete table[y_coord][x_coord];
-//		std::cerr << ex.what ();
-//		abort ();
-//	}
-//}
-//
-//// show table by console
-//void ocean::show_table () const {
-//	for(size_t y = 0; y < table_size; ++y) {
-//		for(size_t x = 0; x < table_size; ++x) {
-//			if(table[y][x] != nullptr)
-//				table[y][x]->draw ();
-//		}
-//		std::cout << std::endl;
-//	}
-//	std::cout << std::endl;
-//}
-//
-//// show numbers of citizens, obsticals and other placec in the ocean
-//void ocean::show_citizens () const {
-//	std::cout << "Full place in ocean: "
-//		<< (num_civl + num_pred + num_obst + num_cell) << std::endl;
-//	std::cout << "Civil citizens: " << num_civl << std::endl;
-//	std::cout << "Predators     : " << num_pred << std::endl;
-//	std::cout << "Obstacles     : " << num_obst << std::endl;
-//	std::cout << "Clean place   : " << num_cell << std::endl;
-//}
-//void ocean::move_citizens (int steps) {
-//	const int possible_sides = 4;
-//
-//	move.set_max_coord (table_size - 1);
-//
-//	for(int movement = 0; movement < steps; ++movement) {
-//		for(size_t y_cord = 0; y_cord < table_size; ++y_cord) {
-//			for(size_t x_cord = 0; x_cord < table_size; ++x_cord)
-//			{
-//				int rand_step = rand () % possible_sides;
-//				move.set_coord (y_cord, x_cord, rand_step);
-//
-//				if(check_steps()) {
-//					go_citizen ();
-//				}
-//			}
-//		}
-//	}
-//}
-//
-//bool ocean::check_steps () {
-//	const char civl_s = 'c';
-//	const char pred_s = 'p';
-//	const char cell_s = '-';
-//	if((table[move.get_y_current ()][move.get_x_current ()]->get_symbol () == pred_s &&
-//		(table[move.get_y_compared ()][move.get_x_compared ()]->get_symbol () == civl_s ||
-//		table[move.get_y_compared ()][move.get_x_compared ()]->get_symbol () == cell_s))
-//		||
-//		(table[move.get_y_current ()][move.get_x_current ()]->get_symbol () == civl_s &&
-//		table[move.get_y_compared ()][move.get_x_compared ()]->get_symbol () == cell_s)) {
-//		return true;
-//	}
-//	else {
-//		return false;
-//	}
-//}
-//void ocean::go_citizen () {
-//	delete table[move.get_y_compared ()][move.get_x_compared ()];
-//	table[move.get_y_compared ()][move.get_x_compared ()] =
-//		new cell (*table[move.get_y_current ()][move.get_x_current ()]);
-//
-//	delete table[move.get_y_current ()][move.get_x_current ()];
-//	table[move.get_y_current ()][move.get_x_current ()] = new cell;
-//}
-
-

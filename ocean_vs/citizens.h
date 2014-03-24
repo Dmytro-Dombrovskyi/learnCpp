@@ -21,17 +21,16 @@ protected:
 	virtual void Draw () const { std::cout << symbol_ << " "; }
 	virtual char GetSymbol () const { return symbol_; }
 	virtual bool IsMovable () const { return false; }
-	virtual bool CanPass () const { return true; }
+	virtual bool CanBeEaten () const { return true; }
 };
 
 // virtual class block(not movable)
 class Block : public Cell {
-protected:
+public:
 	explicit Block (const char symbol = '|')
 		: Cell (symbol) {}
 	virtual ~Block () {}
-
-	virtual bool CanPass () const { return false; }
+	virtual bool CanBeEaten () const { return false; }
 };
 
 // virtual base class for citizen in the ocean
@@ -41,25 +40,27 @@ protected:
 		: Cell (symbol) {}
 
 	virtual bool IsMovable () const { return true; }
-	virtual bool CanPass () const = 0;
-	virtual bool IsCivil () const { return false; }
-	virtual bool IsPredator () const { return false; }
+	virtual bool CanBeEaten( ) const = 0;
+	virtual bool IsCivil( ) const { return false; }
+	virtual bool IsPredator( ) const { return false; }
 };
 
 // movable class civil citizens  
 class Civil : public Animal {
-protected:
-	explicit Civil (const char symbol = 'c')
-		: Animal (symbol) {}
+public:
+	explicit Civil (const char i_civil_symbol = 'c')
+		: Animal (i_civil_symbol) {}
 	virtual bool IsCivil () const { return true; }
+	virtual bool CanBeEaten( ) const { return true; }
 };
 
 // class predator, which can eat other citizens and movable
 class Predator : public Animal {
-protected:
+public:
 	explicit Predator (const char symbol = '*')
 		: Animal (symbol) {}
 	virtual bool IsPredator () const { return true; }
+	virtual bool CanBeEaten( ) const { return false; }
 };
 
 #endif // citizens
