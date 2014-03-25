@@ -1,6 +1,0 @@
-﻿  ocean.cpp
-  ocean_main.cpp
-ocean_main.cpp(5): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-  Generating code
-  Finished generating code
-  ocean_vs.vcxproj -> E:\bkt_programs2014\homework_23_01_2014\ocean\ocean_vs\Release\ocean_vs.exe
