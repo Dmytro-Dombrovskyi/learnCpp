@@ -1,12 +1,9 @@
 #include "ocean.h"
 
-const int CounterCitizen::nTypes_ = 4; // static private member
-
 // constructor by default
 Ocean::Ocean (const size_t i_size)
-	: tableSize_(i_size) 
-{
-	this->CreateTable (tableSize_);	
+	: tableSize_(i_size) {
+	this->CreateTable (tableSize_);
 	counter = new CounterCitizen (tableSize_);
 }
 // get new memory to member table
@@ -35,19 +32,19 @@ void Ocean::CleanTable () {
 		table_[i] = nullptr;
 	}
 	delete[]table_;
-	table_ = nullptr;	
+	table_ = nullptr;
 }
 
 // destructor for class ocean
 Ocean::~Ocean () {
-	this->CleanTable ();	
+	this->CleanTable ();
 	delete counter;
 	counter = nullptr;
 }
 
 // assignment constructor for class ocean
 Ocean & Ocean::operator=(const Ocean &a) {
-	if(this != &a) {		
+	if(this != &a) {
 		Cell ***temp = new Cell**[a.tableSize_];
 		for(size_t i = 0; i < a.tableSize_; ++i) {
 			temp[i] = new Cell*[a.tableSize_];
@@ -55,7 +52,7 @@ Ocean & Ocean::operator=(const Ocean &a) {
 		for(size_t i = 0; i < a.tableSize_; ++i) {
 			for(size_t j = 0; j < a.tableSize_; ++j) {
 				if(a.table_[i][j] == nullptr)
-					temp[i][j] = nullptr;					
+					temp[i][j] = nullptr;
 				else
 					temp[i][j] = new Cell(*(a.table_[i][j]));
 			}
@@ -64,12 +61,12 @@ Ocean & Ocean::operator=(const Ocean &a) {
 		this->CleanTable ();
 		tableSize_ = a.tableSize_;
 		table_ = temp;
-		counter = a.counter;		
+		counter = a.counter;
 	}
 	return *this;
 }
 // copy constructor for class ocean
-Ocean::Ocean (const Ocean &a) {	
+Ocean::Ocean (const Ocean &a) {
 	// get new memory for current class
 	table_ = new Cell**[a.tableSize_];
 	for(size_t i = 0; i < a.tableSize_; ++i) {
@@ -85,29 +82,26 @@ Ocean::Ocean (const Ocean &a) {
 }
 
 // fill data in current class ocean
-void Ocean::FillTable () {		
+void Ocean::FillTable () {
 	CounterCitizen Citizens(*counter);
-	const int number_types = Citizens.Get_nTypes();	
-	int current_type = 0;	
-	
-	for(size_t y = 0; y < tableSize_; ++y)
-	{
-		for(size_t x = 0; x < tableSize_; ++x)
-		{
-			current_type = rand() % number_types;
+    const int number_types = Citizens.Get_nTypes();
+	int current_type = 0;
 
-			if(Citizens.Check_Citizens_By_Number(current_type))
-			{
+	for(size_t y = 0; y < tableSize_; ++y)	{
+		for(size_t x = 0; x < tableSize_; ++x)	{
+			current_type = rand() % number_types;
+			if(Citizens.Check_Citizens_By_Number(current_type)) {
 				CreateNewCitizen(Citizens, current_type, y, x);
 			}
 			else --x;
 		}
 	}
-}
 
+}
+// create citizen by type
 void Ocean::CreateNewCitizen (CounterCitizen & temp,
 										const int type_object,
-										const size_t y_coord, 
+										const size_t y_coord,
 										const size_t x_coord) {
 	enum { civil, block, predator, cell };
 	switch(type_object) {
@@ -130,7 +124,7 @@ void Ocean::CreateNewCitizen (CounterCitizen & temp,
 	default:
 		throw std::invalid_argument
 			("Error! Wrong value for assignment.");
-	}	
+	}
 }
 
 // show table by console
@@ -145,53 +139,56 @@ void Ocean::ShowTable () const {
 	std::cout << std::endl;
 }
 
-void Ocean::ShowCitizens() const
-{
-	counter->Show_Citizens();
-}
+void Ocean::MoveCitizens (int steps) {
 
-void Ocean::MoveCitizens (/*int steps*/) {	
-	//const int possible_sides = /*4*/ 1;
 	const size_t max_coord = tableSize_ - 1;
 	coordinates current;
 	coordinates compare;
 	Predator *ptrPredator;
 	Civil		*ptrCivil;
-	
-	
-	for(size_t y_cord = 0; y_cord <= max_coord; ++y_cord)
-	{
-		for(size_t x_cord = 0; x_cord <= max_coord; ++x_cord)
-		{	
-			if(table_[y_cord][x_cord]->IsMovable( ))
-			{
-				current.Set_Coordinates(y_cord, x_cord);				
-				Side_For_Step Possible_Sides(max_coord, y_cord, x_cord);
-				if((ptrPredator = dynamic_cast<Predator*>(table_[y_cord][x_cord])))
-				{					
-					if(Possible_Sides.Can_Go_Right() &&
-						(ptrCivil = dynamic_cast<Civil*>(table_[y_cord][x_cord + 1])) )
-					{
-						compare.Set_Coordinates(y_cord, (x_cord + 1));
-						PredatorEatCivil(current, compare);
-					}
-					else if(Possible_Sides.Can_Go_Down() && (ptrCivil = dynamic_cast<Civil*>(table_[y_cord + 1][x_cord])))
-					{
-						compare.Set_Coordinates(y_cord + 1, x_cord);
-						PredatorEatCivil(current, compare);
-					}
-					else if(Possible_Sides.Can_Go_Left() && (ptrCivil = dynamic_cast<Civil*>(table_[y_cord][x_cord - 1])))
-					{
-						compare.Set_Coordinates(y_cord, x_cord - 1);
-						PredatorEatCivil(current, compare);
-					}
-					else if(Possible_Sides.Can_Go_Up( ) && (ptrCivil = dynamic_cast<Civil*>(table_[y_cord - 1][x_cord])))
-					{
-						compare.Set_Coordinates(y_cord - 1, x_cord);
-						PredatorEatCivil(current, compare);
+	while(steps) {
+		for(size_t y_cord = 0; y_cord <= max_coord; ++y_cord)	{
+			for(size_t x_cord = 0; x_cord <= max_coord; ++x_cord)	{
+				if(table_[y_cord][x_cord]->IsMovable()) 	{
+
+					current.Set_Coordinates(y_cord, x_cord);
+					Side_For_Step Possible_Sides(max_coord, y_cord, x_cord);
+					if((ptrPredator = dynamic_cast<Predator*>(table_[y_cord][x_cord])))	{
+						if(Possible_Sides.Can_Go_Right() &&
+							(ptrCivil = dynamic_cast<Civil*>(table_[y_cord][x_cord + 1])))	{
+							compare.Set_Coordinates(y_cord, (x_cord + 1));
+							PredatorEatCivil(current, compare);
+						}
+						else if(Possible_Sides.Can_Go_Down() && (ptrCivil = dynamic_cast<Civil*>(table_[y_cord + 1][x_cord])))	{
+							compare.Set_Coordinates(y_cord + 1, x_cord);
+							PredatorEatCivil(current, compare);
+						}
+						else if(Possible_Sides.Can_Go_Left() && (ptrCivil = dynamic_cast<Civil*>(table_[y_cord][x_cord - 1])))	{
+							compare.Set_Coordinates(y_cord, x_cord - 1);
+							PredatorEatCivil(current, compare);
+						}
+						else if(Possible_Sides.Can_Go_Up() && (ptrCivil = dynamic_cast<Civil*>(table_[y_cord - 1][x_cord])))	{
+							compare.Set_Coordinates(y_cord - 1, x_cord);
+							PredatorEatCivil(current, compare);
+						}
 					}
 				}
 			}
 		}
-	}	
+		--steps;
+	}
+}
+// move Predator to next coordinate
+void Ocean::PredatorEatCivil(const coordinates &current,
+									  const coordinates &compared)
+{
+	// delete Civil citizen
+	delete table_[compared.Get_Y_Coord()][compared.Get_X_Coord()];
+	counter->Minus_one_Civil();
+	// move predator to new place
+	table_[compared.Get_Y_Coord()][compared.Get_X_Coord()] = new Predator;
+	delete table_[current.Get_Y_Coord()][current.Get_X_Coord()];
+	// create Cell on previous place
+	table_[current.Get_Y_Coord()][current.Get_X_Coord()] = new Cell;
+	counter->Plus_one_Cell();
 }

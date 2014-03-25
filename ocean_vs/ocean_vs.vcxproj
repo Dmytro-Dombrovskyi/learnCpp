@@ -87,6 +87,7 @@
   <ItemGroup>
     <ClInclude Include="citizens.h" />
     <ClInclude Include="ocean.h" />
+    <ClInclude Include="ocean_help_classes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -3,72 +3,136 @@
 #define OCEAN_HELP_CLASSES_H
 #include <iostream>
 #include <stdexcept>
+#include <exception>
 #include <cstdlib>
-// change for copy
-class objects_counter {
+
+// help class ocean for saving numbers of citizens
+class CounterCitizen
+{
 private:
-	enum { r_civil, r_predt, r_obstk, r_clean };
-	size_t N_civil;
-	size_t N_predt;
-	size_t N_obstc;
-	size_t N_clean;
-
+	enum object_ { civil, block, predator, cell };
+	static const int nTypes_; // defined in ocean_help_classes.cpp
+	size_t nCivil_;
+	size_t nBlock_;
+	size_t nPredator_;
+	size_t nCell_;
 public:
-	objects_counter () {}
-	objects_counter (const size_t, const size_t,
-									 const size_t, const size_t);
-	virtual ~objects_counter () {}
-	void set_objects (const size_t, const size_t,
-									 const size_t, const size_t);
-	bool get_object (const int);
-
-	inline void minus_civil () { --N_civil; }
-	inline void minus_predt () { --N_predt; }
-	inline void minus_obstc () { --N_obstc; }
-	inline void minus_clean () { --N_clean; }
-
-	inline bool can_civil_created () {	return (N_civil) ? true : false; }
-	inline bool can_predt_created () { return (N_predt) ? true : false; }
-	inline bool can_obstc_created () { return (N_obstc) ? true : false; }
-	inline bool can_clean_created () { return (N_clean) ? true : false; }
-
-	void get_table () {
-		std::cout << "N_civil: " << N_civil << std::endl;
-		std::cout << "N_predt: " << N_predt << std::endl;
-		std::cout << "N_obstc: " << N_obstc << std::endl;
-		std::cout << "N_clean: " << N_clean << std::endl;
-		std::cout << std::endl;
+	// default formula for calculating citizens
+	// (for creating )
+	explicit CounterCitizen(const size_t value,
+									const size_t divideValue = 4)	{
+		const size_t tempSize = value * value;
+		nCivil_ = nBlock_ = nPredator_ = tempSize / divideValue;
+		nCell_ = tempSize - nCivil_ - nBlock_ - nPredator_;
 	}
-	inline bool counter_clean () const {
-		return (N_civil == 0 && N_predt == 0 && N_obstc == 0 && N_clean == 0) ? true : false;
+
+	virtual ~CounterCitizen() {}
+
+	size_t Get_nCivil() const { return nCivil_; }
+	size_t Get_nBlock() const { return nBlock_; }
+	size_t Get_nPredator() const { return nPredator_; }
+	size_t Get_nCell() const { return nCell_; }
+
+	int Get_nTypes() const {return nTypes_;}
+
+	bool Is_nCivil() const { return nCivil_ ? true : false; }
+	bool Is_nBlock() const { return nBlock_ ? true : false; }
+	bool Is_nPredator() const { return nPredator_ ? true : false; }
+	bool Is_nCell() const { return nCell_ ? true : false; }
+
+	bool Check_For_Citizens() const	{
+		if(Is_nCivil() && Is_nBlock() &&
+			Is_nPredator() && Is_nCell())
+			return true;
+		else
+			return false;
 	}
-	inline size_t total_objects () const { return N_civil + N_predt + N_obstc + N_clean; }
+
+	bool Check_Citizens_By_Number(const int number) const	{
+		switch(number)	{
+			case civil:
+				return Is_nCivil();
+			case block:
+				return Is_nBlock();
+			case predator:
+				return Is_nPredator();
+			case cell:
+				return Is_nCell();
+			default:
+				throw std::logic_error("Error choice in method Check_Citizens_By_Number!");
+		}
+	}
+
+	void Minus_Citizen_By_Number(const int number)	{
+		switch(number)	{
+			case civil:	--nCivil_;
+				break;
+			case block: --nBlock_;
+				break;
+			case predator: --nPredator_;
+				break;
+			case cell: --nCell_;
+				break;
+			default:
+				throw std::logic_error("Error choice in method: Minus_Citizen_By_Number!");
+		}
+	}
+
+	void Minus_one_Civil()	{	if(nCivil_) --nCivil_;	}
+	void Plus_one_Cell()	{	++nCell_; }
+
+	// show number of citizens
+	void Show_Citizens() const	{
+		std::cout << "nCivil_:   " << nCivil_ << std::endl;
+		std::cout << "nBlock_:   " << nBlock_ << std::endl;
+		std::cout << "nPredator: " << nPredator_ << std::endl;
+		std::cout << "nCell_:    " << nCell_ << std::endl;
+	}
 };
 
-class coordinate {
-private:
-	enum side { right, left, up, down };
-	side move;
-	size_t y_current;
-	size_t x_current;
-	size_t y_compared;
-	size_t x_compared;
-	size_t max_coordinate;
-
-	void go_right ();
-	void go_left ();
-	void go_up ();
-	void go_down ();
+// write coordinates for method move in class Ocean
+class coordinates
+{
+	int y_coord;
+	int x_coord;
 public:
-	coordinate () {}
-	virtual ~coordinate () {}
-	inline size_t get_y_current () const { return y_current; }
-	inline size_t get_x_current () const { return x_current; }
-	inline size_t get_y_compared () const { return y_compared; }
-	inline size_t get_x_compared () const { return x_compared; }
+	void Set_Coordinates(int y, int x)
+	{ y_coord = y; x_coord = x; }
 
-	inline void set_max_coord (const size_t i_max) { max_coordinate = i_max; }
-	void set_coord (const size_t, const size_t, const int);
+	int Get_Y_Coord() const { return y_coord; }
+	int Get_X_Coord() const { return x_coord; }
+};
+
+// Check possible steps by inputed coordinates
+class Side_For_Step
+{
+private:
+	int maximal_coord_;
+	int y_coord_;
+	int x_coord_;
+protected:
+	bool Right;
+	bool Down;
+	bool Left;
+	bool Up;
+public:
+	Side_For_Step(const int i_max_coord,  const int i_y_coord,
+					  const int i_x_coord)
+					  :maximal_coord_(i_max_coord),
+					  y_coord_(i_y_coord),
+					  x_coord_(i_x_coord) {
+		// check for possible steps
+		Right = (x_coord_ < maximal_coord_);
+		Down = (y_coord_ < maximal_coord_);
+		Left = (x_coord_ > 0);
+		Up = (y_coord_ > 0);
+	}
+	virtual  ~Side_For_Step() {}
+
+	bool Can_Go_Right() const { return Right; }
+	bool Can_Go_Down() const { return Down; }
+	bool Can_Go_Left() const { return Left; }
+	bool Can_Go_Up() const { return Up; }
 };
 
 #endif
